@@ -2,21 +2,18 @@
 
 module.exports = (sequelize, DataTypes) => {
     const Product = sequelize.define("product", {
-        title: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        description: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
-        price: {
-            type: DataTypes.INTEGER
-        },
-        published: {
-            type: DataTypes.BOOLEAN
-        }
-
-    })
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    });
     return Product;
 }

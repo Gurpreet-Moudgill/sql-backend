@@ -10,13 +10,11 @@ const addProduct = async (req, res) => {
     //     price: price.req.body,
     //     published: published.req.body ? published.req.body : false
     // }
-    const { title, description, price, published } = req.body;
+    const { name, email, password } = req.body;
 
-    const product = await Product.create({
-      title,
-      description,
-      price,
-      published,
+    const product = await Product.create({name,
+      email,
+      password,
     });
     res.status(200).send(product);
 }
