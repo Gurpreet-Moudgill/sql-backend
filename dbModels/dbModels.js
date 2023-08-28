@@ -27,6 +27,11 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.products = require("./productModels")(sequelize, DataTypes);
+db.addresses = require("./adressModels")(sequelize, DataTypes);
+
+// db.products.hasOne(db.addresses, { foreignKey: "id"});
+db.products.hasMany(db.addresses, { foreignKey: "user_id" });
+db.addresses.belongsTo(db.products, { foreignKey: "user_id" });
 
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Synced");
