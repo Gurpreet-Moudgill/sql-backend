@@ -3,22 +3,23 @@ const db = require('../dbModels/dbModels')
 const Product = db.products;
 const Address = db.addresses;
 
-const addProduct = async (req, res) => {
-  // const info = {
-  //     title: title.req.body,
-  //     description: description.req.body,
-  //     price: price.req.body,
-  //     published: published.req.body ? published.req.body : false
-  // }
-  const { name, email, password, user_id } = req.body;
+const ro = async (req, res) => {
+  res.render('create')
+}
 
-  const product = await Product.create({ name, email, password, user_id });
+const addProduct = async (req, res) => {
+  const { name, email, phoneNo } = req.body;
+  const product = await Product.create({ name, email, phoneNo });
+  product.save();
   res.status(200).send(product);
+  // res.redirect("/");
 };
 
 const getallProducts = async (req, res) => {
-  const product = await Product.findAll({});
-  res.status(200).send(product);
+  const product = await Product.findAll({ raw: true });
+  // res.status(200).send(product);
+  // console.log(product,'products');
+  res.status(200).render('home', { product: product });
 };
 
 const getProduct = async (req, res) => {
@@ -40,10 +41,12 @@ const updateProduct = async (req, res) => {
 // };
 
 //controller for address table
-const addAddress = async (req, res) => {
-  const { city, state, user_id } = req.body;
 
-  const address = await Address.create({ city, state, user_id });
+const addAddress = async (req, res) => {
+  const { username, password } = req.body;
+
+  const address = await Address.create({ username, password });
+  address.save();
   res.status(200).send(address);
 };
 
@@ -52,6 +55,8 @@ const getaddress = async (req, res) => {
   res.status(200).send(address);
 };
 
+
+// Associations
 const onetoone = async (req, res) => {
   const data = await Product.findAll({
     include: [{ model: Address }],
@@ -85,4 +90,5 @@ module.exports = {
   onetoone,
   belongsTo,
   onetomany,
+  ro
 };

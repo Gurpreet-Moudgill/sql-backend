@@ -1,17 +1,27 @@
+const bcrypt = require("bcrypt")
+
 module.exports = (sequelize, DataTypes) => {
   const Address = sequelize.define("address", {
-    city: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    state: {
+    password: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
       allowNull: false,
     },
   });
+
+  Address.beforeCreate((user, options) => {
+
+    return bcrypt.hash(user.password, 10)
+        .then(hash => {
+            user.password = hash;
+        })
+        .catch(err => { 
+            throw new Error(); 
+        });
+});
+
   return Address;
 };

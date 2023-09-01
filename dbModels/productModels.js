@@ -10,12 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
+      phoneNo: {
+        type: DataTypes.INTEGER(10),
         allowNull: false,
       },
     });

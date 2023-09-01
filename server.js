@@ -1,26 +1,31 @@
 const express = require('express');
+const exphbs = require('express-handlebars')
 const dotenv = require('dotenv').config();
-// import * as express from 'express'
 const cors = require('cors');
 const app = express();
-
-// var hostt = {
-//   origin: "https://192.168.29.36:8081",
-// };
+const authRoutes = require('./routes/authRoutes')
 
 app.use(cors(
-    
+
 ));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
+app.set('view engine', 'hbs');
 
-
+// routes
 const router = require("./routes/dbRoutes");
+const { getallProducts } = require('./controllers/dbController');
+app.use(authRoutes);
 app.use("/products", router);
-
-app.get('/', (req, res)=>{
-    res.json({message:"hello"})
+app.get('/', getallProducts)
+app.get('/create', (req, res) => {
+    res.render('create');
 })
+app.use(authRoutes);
+
+
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
