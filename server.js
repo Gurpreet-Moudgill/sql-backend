@@ -4,12 +4,14 @@ const dotenv = require('dotenv').config();
 const cors = require('cors');
 const app = express();
 const authRoutes = require('./routes/authRoutes')
+const cookies = require("cookie-parser")
 
 app.use(cors(
 
 ));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
