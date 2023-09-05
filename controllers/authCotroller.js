@@ -2,6 +2,7 @@ const db = require('../dbModels/dbModels')
 const Address = db.addresses;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer')
 const { use } = require('../routes/authRoutes');
 
 const createToken = (id) => {
@@ -10,6 +11,14 @@ const createToken = (id) => {
 
   })
 }
+
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: 'modgillgaurav6543@gmail.com',
+    pass: "ismupztwfignmnpu"
+  },
+})
 
 const authenticateToken=(req, res, next)=> {
   const token = req.header('Authorization');
@@ -29,11 +38,11 @@ const getLogin = (req, res) => {
   res.render('login');
 }
 const postSignUp = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
     let pass =  await bcrypt.hash(password, 10);
 
-    const address = await Address.create({ username, password: pass });
+    const address = await Address.create({ email, password: pass });
     address.save();
     const token = createToken(address.id);
     // res.cookie('jwt', token, { httpOnly: true })
@@ -43,11 +52,28 @@ const postSignUp = async (req, res) => {
     console.log(err);
     res.status(400).send('user not created,please fill all details')
   }
+
+  const mailOptions = {
+    from: '"Verify your email" <verifyemail@gmail.com>',
+    to: email,
+    subject: "Bhayi email verify krde",
+    html: `<h2>${email} Thanks for registering on our site ;)</h2>`
+  }
+
+  transport.sendMail(mailOptions, function(err, info){
+    if(err){
+      console.log(err)
+    }
+    else{
+      res.json('mail has been sent')
+      console.log("mail has been sent")
+    }
+  })
 };
 
 const postLogin = async (req, res) => {
-  const { username, password } = req.body;
-  const user =await Address.findOne({where:{username:username}});
+  const { email, password } = req.body;
+  const user =await Address.findOne({where:{email:email}});
   console.log(user);  
   if (!user) return res.status(400).send('User not found.');
 
@@ -57,7 +83,7 @@ const postLogin = async (req, res) => {
     return res.status(200).send('Success.');
   }
 
-  const token =  jwt.sign({ username: user.username }, 'secret-key');
+  const token =  jwt.sign({ email: user.email }, 'secret-key');
   res.send({ token })
 }
 catch(error){

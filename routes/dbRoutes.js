@@ -4,8 +4,6 @@ const {
   getallProducts,
   getProduct,
   updateProduct,
-  getaddress,
-  addAddress,
   ro,
 } = require("../controllers/dbController");
 const {authenticateToken} = require("../controllers/authCotroller")
@@ -21,8 +19,8 @@ router.put("/update/:id",authenticateToken, updateProduct);
 router.get('/del/:id',authenticateToken, deleteProduct);
 
 // Addresses
-router.get("/getaddress", getaddress);
-router.post("/addaddress", addAddress);
+// router.get("/getaddress", getaddress);
+// router.post("/addaddress", addAddress);
 
 // Associations
 // router.get("/onetoone", onetoone);

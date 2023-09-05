@@ -43,18 +43,18 @@ const deleteProduct = async (req, res) => {
 
 //controller for address table
 
-const addAddress = async (req, res) => {
-  const { username, password } = req.body;
+// const addAddress = async (req, res) => {
+//   const { username, password } = req.body;
 
-  const address = await Address.create({ username, password });
-  address.save();
-  res.status(200).send(address);
-};
+//   const address = await Address.create({ username, password });
+//   address.save();
+//   res.status(200).send(address);
+// };
 
-const getaddress = async (req, res) => {
-  const address = await Address.findAll({});
-  res.status(200).send(address);
-};
+// const getaddress = async (req, res) => {
+//   const address = await Address.findAll({});
+//   res.status(200).send(address);
+// };
 
 
 // Associations
@@ -87,8 +87,6 @@ module.exports = {
   getProduct,
   deleteProduct,
   updateProduct,
-  addAddress,
-  getaddress,
   onetoone,
   belongsTo,
   onetomany,
